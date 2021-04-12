@@ -152,7 +152,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c103a6ff6c4a5ff4aa2e92d1e0621a7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_cloneableObject: {fileID: 11400000, guid: 41f72f6219438164a862f4978703604d, type: 2}
+  m_targetObjectField: {fileID: 11400000, guid: 4772e134a316daf448a01d03a1ea2138,
+    type: 2}
   m_badAttributeType: {fileID: 0}
   m_badFieldType: {fileID: 0}
 --- !u!4 &275754750

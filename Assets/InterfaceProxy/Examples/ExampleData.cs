@@ -7,12 +7,12 @@ namespace JPAssets.Unity.Examples.InterfaceProxy
     {
         /// <summary>
         /// This field is decorated with an attribute which restricts it to only accept objects
-        /// which implement the <see cref="ICloneable"/> interface.
+        /// which implement the <see cref="ITargetInterface"/> interface.
         /// Attempting to assign an object in the inspector which does not implement the interface
         /// will log an error and fail.
         /// </summary>
-        [InterfaceProxy(typeof(ICloneable))]
-        public UnityEngine.Object m_cloneableObject;
+        [InterfaceProxy(typeof(ITargetInterface))]
+        public UnityEngine.Object m_targetObjectField;
 
         /// <summary>
         /// This attribute uses a non-interface type. As such, it is displayed as an error in the inspector.
@@ -25,15 +25,15 @@ namespace JPAssets.Unity.Examples.InterfaceProxy
         /// thus there is no benefit to declaring the InterfaceProxyAttribute here. A warning is displayed
         /// in the inspector explaining this.
         /// </summary>
-        [InterfaceProxy(typeof(ICloneable))]
+        [InterfaceProxy(typeof(ITargetInterface))]
         public GameObject m_badFieldType;
 
         public void Start()
         {
-            if (m_cloneableObject != null)
+            if (m_targetObjectField != null)
             {
-                Debug.Assert(InterfaceProxyUtilities.TryCast<ICloneable>(m_cloneableObject, out ICloneable result));
-                Debug.Log($"Successfully cast to ICloneable object.");
+                Debug.Assert(InterfaceProxyUtilities.TryCast<ITargetInterface>(m_targetObjectField, out ITargetInterface result));
+                Debug.Log($"Successfully cast to ITargetInterface object.");
             }
         }
     }

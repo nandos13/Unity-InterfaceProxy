@@ -2,16 +2,5 @@
     "name": "JPAssets.Unity.InterfaceProxy.Examples",
     "references": [
         "GUID:b6c862481b834804f84c3e8b31dc4062"
-    ],
-    "includePlatforms": [
-        "Editor"
-    ],
-    "excludePlatforms": [],
-    "allowUnsafeCode": false,
-    "overrideReferences": false,
-    "precompiledReferences": [],
-    "autoReferenced": true,
-    "defineConstraints": [],
-    "versionDefines": [],
-    "noEngineReferences": false
+    ]
 }

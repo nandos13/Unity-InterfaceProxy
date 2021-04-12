@@ -75,6 +75,11 @@ namespace JPAssets.Unity
             return alertRect;
         }
 
+        private static bool IsUnsupportedType(UnityEngine.Object obj, Type interfaceType)
+        {
+            return obj != null && !interfaceType.IsAssignableFrom(obj.GetType());
+        }
+
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             // Custom property drawer logic should only execute for object reference fields that can be
@@ -94,6 +99,15 @@ namespace JPAssets.Unity
 
                     if (isInterfaceType)
                     {
+                        // If an object is assigned that does not match the interface type restriction, assign null and log an error
+                        if (IsUnsupportedType(property.objectReferenceValue, interfaceType))
+                        {
+                            Debug.LogError($"The referenced object of type {property.objectReferenceValue.GetType()} does not implement the {interfaceType} interface type.");
+                            property.objectReferenceValue = null;
+
+                            EditorUtility.SetDirty(property.serializedObject.targetObject);
+                        }
+
                         // Store the previous object reference in case we want to revert a change
                         var previousObjRef = property.objectReferenceValue;
 
@@ -106,10 +120,8 @@ namespace JPAssets.Unity
 
                         if (didChange)
                         {
-                            var newObj = property.objectReferenceValue;
-
                             // If the newly assigned object does not match the interface type restriction, revert the change and log an error
-                            if (newObj != null && interfaceType.IsAssignableFrom(newObj.GetType()))
+                            if (IsUnsupportedType(property.objectReferenceValue, interfaceType))
                             {
                                 Debug.LogError($"Unable to assign object of type {property.objectReferenceValue.GetType()} as it does not implement the {interfaceType} interface type.");
                                 property.objectReferenceValue = previousObjRef;
