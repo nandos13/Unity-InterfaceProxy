@@ -1,0 +1,12 @@
+{
+  "name": "au.com.nandos13.unityinterfaceproxy",
+  "version": "1.0.0",
+  "displayName": "Interface Proxy",
+  "description": "Provides a simple means to restrict the type of object that can be assigned to a field to a desired interface type.",
+  "unity": "2018.4",
+  "author": {
+    "name": "Jake Perry",
+	"email": "jakeperrygamedev@gmail.com",
+	"url": ""
+  }
+}
