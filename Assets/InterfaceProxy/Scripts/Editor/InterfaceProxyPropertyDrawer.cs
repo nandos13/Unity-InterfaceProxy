@@ -8,21 +8,10 @@ namespace JPAssets.Unity
     [CustomPropertyDrawer(typeof(InterfaceProxyAttribute))]
     public sealed class InterfaceProxyPropertyDrawer : PropertyDrawer
     {
-        private static MethodInfo s_defaultPropertyFieldMethod;
         private static MethodInfo s_getHelpIconMethod;
         private static GUIContent s_attributeNonInterfaceTypeErrorDialogContent;
         private static GUIContent s_attributeSealedTypeWarningDialogContent;
-
-        private static MethodInfo DefaultPropertyFieldMethod
-        {
-            get
-            {
-                if (s_defaultPropertyFieldMethod is null)
-                    s_defaultPropertyFieldMethod = typeof(EditorGUI).GetMethod("DefaultPropertyField", BindingFlags.Static | BindingFlags.NonPublic);
-
-                return s_defaultPropertyFieldMethod;
-            }
-        }
+        private static GUIContent s_fieldNonObjectRefTypeWarningDialogContent;
 
         private static Texture2D GetHelpIcon(MessageType messageType)
         {
@@ -48,7 +37,7 @@ namespace JPAssets.Unity
             }
         }
 
-        private static GUIContent AttributeSealedTypeWarningDialogContent
+        private static GUIContent FieldSealedTypeWarningDialogContent
         {
             get
             {
@@ -56,11 +45,27 @@ namespace JPAssets.Unity
                 {
                     s_attributeSealedTypeWarningDialogContent = new GUIContent(
                         image: GetHelpIcon(MessageType.Warning),
-                        tooltip: $"The target field is of a sealed type. There may be no benefit to declaring an {nameof(InterfaceProxyAttribute)} attribute here."
+                        tooltip: $"The target field is of a sealed type."
                         );
                 }
 
                 return s_attributeSealedTypeWarningDialogContent;
+            }
+        }
+
+        private static GUIContent FieldNonObjectRefTypeWarningDialogContent
+        {
+            get
+            {
+                if (s_fieldNonObjectRefTypeWarningDialogContent is null || s_fieldNonObjectRefTypeWarningDialogContent.image == null)
+                {
+                    s_fieldNonObjectRefTypeWarningDialogContent = new GUIContent(
+                        image: GetHelpIcon(MessageType.Warning),
+                        tooltip: $"The target field is not a reference to a unity object."
+                        );
+                }
+
+                return s_fieldNonObjectRefTypeWarningDialogContent;
             }
         }
 
@@ -78,6 +83,19 @@ namespace JPAssets.Unity
         private static bool IsUnsupportedType(UnityEngine.Object obj, Type interfaceType)
         {
             return obj != null && !interfaceType.IsAssignableFrom(obj.GetType());
+        }
+
+        private static void DisplayFieldWithAlert(Rect position, SerializedProperty property, GUIContent label, bool fieldEnabled, GUIContent alertContent)
+        {
+            var alertRect = GetAlertRect(ref position);
+
+            EditorGUI.BeginDisabledGroup(!fieldEnabled);
+            {
+                EditorGUI.PropertyField(position, property, label);
+            }
+            EditorGUI.EndDisabledGroup();
+
+            EditorGUI.LabelField(alertRect, alertContent);
         }
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
@@ -133,31 +151,17 @@ namespace JPAssets.Unity
                     }
                     else
                     {
-                        var errorRect = GetAlertRect(ref position);
-
-                        // Draw a disabled property field
-                        EditorGUI.BeginDisabledGroup(true);
-                        {
-                            EditorGUI.PropertyField(position, property, label);
-                        }
-                        EditorGUI.EndDisabledGroup();
-
-                        EditorGUI.LabelField(errorRect, AttributeNonInterfaceTypeErrorDialogContent);
+                        DisplayFieldWithAlert(position, property, label, false, AttributeNonInterfaceTypeErrorDialogContent);
                     }
                 }
                 else
                 {
-                    // The field type is sealed. Display a warning next to the property field.
-                    var warningRect = GetAlertRect(ref position);
-
-                    EditorGUI.PropertyField(position, property, label);
-
-                    EditorGUI.LabelField(warningRect, AttributeSealedTypeWarningDialogContent);
+                    DisplayFieldWithAlert(position, property, label, true, FieldSealedTypeWarningDialogContent);
                 }
             }
             else
             {
-                DefaultPropertyFieldMethod.Invoke(null, new object[3] { position, property, label });
+                DisplayFieldWithAlert(position, property, label, true, FieldNonObjectRefTypeWarningDialogContent);
             }
         }
     }

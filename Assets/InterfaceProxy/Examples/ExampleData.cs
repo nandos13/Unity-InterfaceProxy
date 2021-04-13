@@ -4,6 +4,7 @@ namespace JPAssets.Unity.Examples.InterfaceProxy
 {
     public class ExampleData : MonoBehaviour
     {
+        [Header("Correct usage")]
         /// <summary>
         /// This field is decorated with an attribute which restricts it to only accept objects
         /// which implement the <see cref="ITargetInterface"/> interface.
@@ -14,6 +15,8 @@ namespace JPAssets.Unity.Examples.InterfaceProxy
         [InterfaceProxy(typeof(ITargetInterface))]
         private UnityEngine.Object m_targetObjectField;
 
+        [Header("Error cases")]
+
         /// <summary>
         /// This attribute uses a non-interface type. As such, it is displayed as an error in the inspector.
         /// </summary>
@@ -22,13 +25,27 @@ namespace JPAssets.Unity.Examples.InterfaceProxy
         private UnityEngine.Object m_badAttributeType;
 
         /// <summary>
-        /// This field is of type GameObject, which is sealed. Only one type can be assigned to the field,
-        /// thus there is no benefit to declaring the InterfaceProxyAttribute here. A warning is displayed
+        /// This field is of type <see cref="GameObject"/>, which is sealed. Only one type can be assigned to the field,
+        /// thus there is no benefit to declaring the <see cref="InterfaceProxyAttribute"/> here. A warning is displayed
         /// in the inspector explaining this.
         /// </summary>
         [SerializeField]
         [InterfaceProxy(typeof(ITargetInterface))]
-        private GameObject m_badFieldType;
+        private GameObject m_badFieldTypeSealed;
+
+        /// <summary>
+        /// This field is not a serializable reference type and cannot be used with <see cref="InterfaceProxyAttribute"/>.
+        /// </summary>
+        [SerializeField]
+        [InterfaceProxy(typeof(ITargetInterface))]
+        private float m_badFieldTypeValueType;
+
+        /// <summary>
+        /// This field is not an internal unity reference type and cannot be used with <see cref="InterfaceProxyAttribute"/>.
+        /// </summary>
+        [SerializeField]
+        [InterfaceProxy(typeof(ITargetInterface))]
+        ExampleNonUnityClass m_badFieldTypeNonUnityReference;
 
         /// <summary>
         /// This is one example on how to nicely cast the serialized object to the target interface.
