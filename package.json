@@ -9,4 +9,11 @@
 	"email": "jakeperrygamedev@gmail.com",
 	"url": ""
   }
+  "samples": [
+    {
+	  "displayName": "Examples",
+	  "description": "Example script showing the correct and incorrect usage of the InterfaceProxy attribute.",
+	  "path": "Samples~/Examples"
+	}
+  ]
 }
