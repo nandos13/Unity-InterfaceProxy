@@ -8,8 +8,8 @@ namespace JPAssets.Unity.Examples.InterfaceProxy
     /// to a field with an <see cref="InterfaceProxyAttribute"/> attribute that is restricted to the
     /// <see cref="ITargetInterface"/> type.
     /// </summary>
-    [CreateAssetMenu(fileName = "TestTargetScriptableObject", menuName = "JPAssets/Unity/Examples/InterfaceProxy/TestTargetScriptableObject")]
-    public class TestTargetScriptableObject : ScriptableObject, ITargetInterface
+    [CreateAssetMenu(fileName = "TargetScriptableObject", menuName = "JPAssets/Unity/Examples/InterfaceProxy/TargetScriptableObject")]
+    public class TargetScriptableObject : ScriptableObject, ITargetInterface
     {
         // Blank class.
     }
