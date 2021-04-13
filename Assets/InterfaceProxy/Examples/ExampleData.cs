@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace JPAssets.Unity.Examples.InterfaceProxy
 {
@@ -11,29 +10,43 @@ namespace JPAssets.Unity.Examples.InterfaceProxy
         /// Attempting to assign an object in the inspector which does not implement the interface
         /// will log an error and fail.
         /// </summary>
+        [SerializeField]
         [InterfaceProxy(typeof(ITargetInterface))]
-        public UnityEngine.Object m_targetObjectField;
+        private UnityEngine.Object m_targetObjectField;
 
         /// <summary>
         /// This attribute uses a non-interface type. As such, it is displayed as an error in the inspector.
         /// </summary>
+        [SerializeField]
         [InterfaceProxy(typeof(GameObject))]
-        public UnityEngine.Object m_badAttributeType;
+        private UnityEngine.Object m_badAttributeType;
 
         /// <summary>
         /// This field is of type GameObject, which is sealed. Only one type can be assigned to the field,
         /// thus there is no benefit to declaring the InterfaceProxyAttribute here. A warning is displayed
         /// in the inspector explaining this.
         /// </summary>
+        [SerializeField]
         [InterfaceProxy(typeof(ITargetInterface))]
-        public GameObject m_badFieldType;
+        private GameObject m_badFieldType;
+
+        /// <summary>
+        /// This is one example on how to nicely cast the serialized object to the target interface.
+        /// </summary>
+        public ITargetInterface GetTarget => m_targetObjectField is ITargetInterface result ? result : null;
 
         public void Start()
         {
-            if (m_targetObjectField != null)
+            // Cast the serialized object
+            var target = GetTarget;
+
+            if (target != null)
             {
-                Debug.Assert(InterfaceProxyUtilities.TryCast<ITargetInterface>(m_targetObjectField, out ITargetInterface result));
-                Debug.Log($"Successfully cast to ITargetInterface object.");
+                Debug.Log("Successfully cast to ITargetInterface object.");
+            }
+            else
+            {
+                Debug.Log("Failed to cast to ITargetInterface. Is the serialized object reference null?");
             }
         }
     }
