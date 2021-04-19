@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace JPAssets.Unity.Examples.InterfaceProxy
+namespace JakePerry.Unity.Examples.InterfaceProxy
 {
     /// <summary>
     /// This class is not a Unity reference (eg. it's not a MonoBehaviour, ScriptableObject, etc).

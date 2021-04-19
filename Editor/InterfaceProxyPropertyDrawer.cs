@@ -3,7 +3,7 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
-namespace JPAssets.Unity
+namespace JakePerry.Unity
 {
     [CustomPropertyDrawer(typeof(InterfaceProxyAttribute))]
     public sealed class InterfaceProxyPropertyDrawer : PropertyDrawer

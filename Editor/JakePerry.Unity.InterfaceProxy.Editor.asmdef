@@ -1,5 +1,5 @@
 {
-    "name": "JPAssets.Unity.InterfaceProxy.Editor",
+    "name": "JakePerry.Unity.InterfaceProxy.Editor",
     "references": [
         "GUID:b6c862481b834804f84c3e8b31dc4062"
     ],

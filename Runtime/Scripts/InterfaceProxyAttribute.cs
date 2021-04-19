@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace JPAssets.Unity
+namespace JakePerry.Unity
 {
     /// <summary>
     /// Use this attribute on an object-reference field (eg. a serialized <see cref="MonoBehaviour"/>

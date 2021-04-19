@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace JPAssets.Unity.Examples.InterfaceProxy
+namespace JakePerry.Unity.Examples.InterfaceProxy
 {
     public sealed class TargetMonobehaviour : MonoBehaviour, ITargetInterface { }
 }
